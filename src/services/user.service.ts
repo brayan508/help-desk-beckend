@@ -1,5 +1,6 @@
 // Arquivo: src/services/user.service.ts
 import bcrypt from 'bcrypt';
+import 'temporal-polyfill/full/global';
 import { db } from '../prisma/db.js';
 import { HttpError } from '../lib/http-error.js';
 
@@ -140,7 +141,7 @@ export async function approveUser(id: string, perfil: Perfil, adminId: string) {
     perfil,
     situacao: 'ativo',
     aprovadoPor: adminId,
-    aprovadoEm: new Date(),
+    aprovadoEm: Temporal.Now.instant(),
   });
 
   // técnico precisa da linha de configurações (disponibilidade, limite, horário)
