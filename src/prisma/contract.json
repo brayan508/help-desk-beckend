@@ -1,0 +1,3412 @@
+{
+  "schemaVersion": "1",
+  "targetFamily": "sql",
+  "target": "postgres",
+  "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
+  "roots": {
+    "anexos": {
+      "model": "Anexos",
+      "namespace": "public"
+    },
+    "auditoria": {
+      "model": "Auditoria",
+      "namespace": "public"
+    },
+    "avaliacoes": {
+      "model": "Avaliacoes",
+      "namespace": "public"
+    },
+    "categorias": {
+      "model": "Categorias",
+      "namespace": "public"
+    },
+    "chamado_eventos": {
+      "model": "ChamadoEventos",
+      "namespace": "public"
+    },
+    "chamados": {
+      "model": "Chamados",
+      "namespace": "public"
+    },
+    "comentarios": {
+      "model": "Comentarios",
+      "namespace": "public"
+    },
+    "preferencias_notificacao": {
+      "model": "PreferenciasNotificacao",
+      "namespace": "public"
+    },
+    "prioridades": {
+      "model": "Prioridades",
+      "namespace": "public"
+    },
+    "redefinicoes_senha": {
+      "model": "RedefinicoesSenha",
+      "namespace": "public"
+    },
+    "sessoes": {
+      "model": "Sessoes",
+      "namespace": "public"
+    },
+    "tecnico_especialidades": {
+      "model": "TecnicoEspecialidades",
+      "namespace": "public"
+    },
+    "tecnicos": {
+      "model": "Tecnicos",
+      "namespace": "public"
+    },
+    "usuarios": {
+      "model": "Usuarios",
+      "namespace": "public"
+    }
+  },
+  "domain": {
+    "namespaces": {
+      "public": {
+        "models": {
+          "Anexos": {
+            "fields": {
+              "caminho": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "chamadoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "enviadoPor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "nomeArquivo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "tamanhoBytes": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "tipoMime": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "chamado": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "chamadoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              },
+              "usuarios": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "enviadoPor"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "caminho": {
+                  "column": "caminho"
+                },
+                "chamadoId": {
+                  "column": "chamado_id"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "enviadoPor": {
+                  "column": "enviado_por"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nomeArquivo": {
+                  "column": "nome_arquivo"
+                },
+                "tamanhoBytes": {
+                  "column": "tamanho_bytes"
+                },
+                "tipoMime": {
+                  "column": "tipo_mime"
+                }
+              },
+              "namespaceId": "public",
+              "table": "anexos"
+            }
+          },
+          "Auditoria": {
+            "fields": {
+              "acao": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "alvoId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "atorId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "detalhe": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/jsonb@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "alvo": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "alvoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "ator": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "atorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "acao": {
+                  "column": "acao"
+                },
+                "alvoId": {
+                  "column": "alvo_id"
+                },
+                "atorId": {
+                  "column": "ator_id"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "detalhe": {
+                  "column": "detalhe"
+                },
+                "id": {
+                  "column": "id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "auditoria"
+            }
+          },
+          "Avaliacoes": {
+            "fields": {
+              "avaliadorId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "chamadoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "comentario": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "nota": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "avaliador": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "avaliadorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "chamado": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "chamadoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "avaliadorId": {
+                  "column": "avaliador_id"
+                },
+                "chamadoId": {
+                  "column": "chamado_id"
+                },
+                "comentario": {
+                  "column": "comentario"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "nota": {
+                  "column": "nota"
+                }
+              },
+              "namespaceId": "public",
+              "table": "avaliacoes"
+            }
+          },
+          "Categorias": {
+            "fields": {
+              "ativa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "chamados": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "categoriaId"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              },
+              "tecnicoEspecialidades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "categoriaId"
+                  ]
+                },
+                "to": {
+                  "model": "TecnicoEspecialidades",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "ativa": {
+                  "column": "ativa"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nome": {
+                  "column": "nome"
+                }
+              },
+              "namespaceId": "public",
+              "table": "categorias"
+            }
+          },
+          "ChamadoEventos": {
+            "fields": {
+              "atorId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "chamadoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "detalhe": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/jsonb@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "tipo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "tipo_evento"
+                  }
+                }
+              }
+            },
+            "relations": {
+              "ator": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "atorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "chamado": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "chamadoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "atorId": {
+                  "column": "ator_id"
+                },
+                "chamadoId": {
+                  "column": "chamado_id"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "detalhe": {
+                  "column": "detalhe"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "tipo": {
+                  "column": "tipo"
+                }
+              },
+              "namespaceId": "public",
+              "table": "chamado_eventos"
+            }
+          },
+          "Chamados": {
+            "fields": {
+              "atribuidoEm": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "atribuidoPor": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "atualizadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "categoriaId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "descricao": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "iniciadoEm": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "prazoSla": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "prioridadeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "resolvidoEm": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "solicitanteId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "solucao": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "status_chamado"
+                  }
+                }
+              },
+              "tecnicoId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "titulo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "anexos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "chamadoId"
+                  ]
+                },
+                "to": {
+                  "model": "Anexos",
+                  "namespace": "public"
+                }
+              },
+              "avaliacoes": {
+                "cardinality": "1:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "chamadoId"
+                  ]
+                },
+                "to": {
+                  "model": "Avaliacoes",
+                  "namespace": "public"
+                }
+              },
+              "categoria": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "categoriaId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Categorias",
+                  "namespace": "public"
+                }
+              },
+              "chamadoEventos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "chamadoId"
+                  ]
+                },
+                "to": {
+                  "model": "ChamadoEventos",
+                  "namespace": "public"
+                }
+              },
+              "comentarios": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "chamadoId"
+                  ]
+                },
+                "to": {
+                  "model": "Comentarios",
+                  "namespace": "public"
+                }
+              },
+              "prioridade": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "prioridadeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Prioridades",
+                  "namespace": "public"
+                }
+              },
+              "solicitante": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "solicitanteId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "tecnico": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "tecnicoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "usuarios": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "atribuidoPor"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "atribuidoEm": {
+                  "column": "atribuido_em"
+                },
+                "atribuidoPor": {
+                  "column": "atribuido_por"
+                },
+                "atualizadoEm": {
+                  "column": "atualizado_em"
+                },
+                "categoriaId": {
+                  "column": "categoria_id"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "descricao": {
+                  "column": "descricao"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "iniciadoEm": {
+                  "column": "iniciado_em"
+                },
+                "prazoSla": {
+                  "column": "prazo_sla"
+                },
+                "prioridadeId": {
+                  "column": "prioridade_id"
+                },
+                "resolvidoEm": {
+                  "column": "resolvido_em"
+                },
+                "solicitanteId": {
+                  "column": "solicitante_id"
+                },
+                "solucao": {
+                  "column": "solucao"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "tecnicoId": {
+                  "column": "tecnico_id"
+                },
+                "titulo": {
+                  "column": "titulo"
+                }
+              },
+              "namespaceId": "public",
+              "table": "chamados"
+            }
+          },
+          "Comentarios": {
+            "fields": {
+              "autorId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "chamadoId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "texto": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "autor": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "autorId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "chamado": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "chamadoId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "autorId": {
+                  "column": "autor_id"
+                },
+                "chamadoId": {
+                  "column": "chamado_id"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "texto": {
+                  "column": "texto"
+                }
+              },
+              "namespaceId": "public",
+              "table": "comentarios"
+            }
+          },
+          "PreferenciasNotificacao": {
+            "fields": {
+              "ativa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "tipo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "tipo_notificacao"
+                  }
+                }
+              },
+              "usuarioId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "usuario": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "usuarioId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "ativa": {
+                  "column": "ativa"
+                },
+                "tipo": {
+                  "column": "tipo"
+                },
+                "usuarioId": {
+                  "column": "usuario_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "preferencias_notificacao"
+            }
+          },
+          "Prioridades": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "peso": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "slaHoras": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "chamados": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "prioridadeId"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "nome": {
+                  "column": "nome"
+                },
+                "peso": {
+                  "column": "peso"
+                },
+                "slaHoras": {
+                  "column": "sla_horas"
+                }
+              },
+              "namespaceId": "public",
+              "table": "prioridades"
+            }
+          },
+          "RedefinicoesSenha": {
+            "fields": {
+              "expiraEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int8@1",
+                  "kind": "scalar"
+                }
+              },
+              "tokenHash": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "usadoEm": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "usuarioId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "usuario": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "usuarioId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "expiraEm": {
+                  "column": "expira_em"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "tokenHash": {
+                  "column": "token_hash"
+                },
+                "usadoEm": {
+                  "column": "usado_em"
+                },
+                "usuarioId": {
+                  "column": "usuario_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "redefinicoes_senha"
+            }
+          },
+          "Sessoes": {
+            "fields": {
+              "criadaEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "dispositivo": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "expiraEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "ip": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/inet@1",
+                  "kind": "scalar"
+                }
+              },
+              "revogadaEm": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "tokenHash": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "ultimoUso": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "usuarioId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "usuario": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "usuarioId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "criadaEm": {
+                  "column": "criada_em"
+                },
+                "dispositivo": {
+                  "column": "dispositivo"
+                },
+                "expiraEm": {
+                  "column": "expira_em"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "ip": {
+                  "column": "ip"
+                },
+                "revogadaEm": {
+                  "column": "revogada_em"
+                },
+                "tokenHash": {
+                  "column": "token_hash"
+                },
+                "ultimoUso": {
+                  "column": "ultimo_uso"
+                },
+                "usuarioId": {
+                  "column": "usuario_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "sessoes"
+            }
+          },
+          "TecnicoEspecialidades": {
+            "fields": {
+              "categoriaId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "usuarioId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "categoria": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "categoriaId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Categorias",
+                  "namespace": "public"
+                }
+              },
+              "usuario": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "usuarioId"
+                  ],
+                  "targetFields": [
+                    "usuarioId"
+                  ]
+                },
+                "to": {
+                  "model": "Tecnicos",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "categoriaId": {
+                  "column": "categoria_id"
+                },
+                "usuarioId": {
+                  "column": "usuario_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "tecnico_especialidades"
+            }
+          },
+          "Tecnicos": {
+            "fields": {
+              "diasAtendimento": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "disponivel": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "horaFim": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/time-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "horaInicio": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/time-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "limiteSimultaneos": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int2@1",
+                  "kind": "scalar"
+                }
+              },
+              "usuarioId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "tecnicoEspecialidades": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "usuarioId"
+                  ],
+                  "targetFields": [
+                    "usuarioId"
+                  ]
+                },
+                "to": {
+                  "model": "TecnicoEspecialidades",
+                  "namespace": "public"
+                }
+              },
+              "usuario": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "usuarioId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "diasAtendimento": {
+                  "column": "dias_atendimento"
+                },
+                "disponivel": {
+                  "column": "disponivel"
+                },
+                "horaFim": {
+                  "column": "horaFim"
+                },
+                "horaInicio": {
+                  "column": "horaInicio"
+                },
+                "limiteSimultaneos": {
+                  "column": "limite_simultaneos"
+                },
+                "usuarioId": {
+                  "column": "usuario_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "tecnicos"
+            }
+          },
+          "Usuarios": {
+            "fields": {
+              "aprovadoEm": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "aprovadoPor": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "atualizadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "criadoEm": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "email": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "perfil": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "perfil_usuario"
+                  }
+                }
+              },
+              "senhaHash": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "setor": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "situacao": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "situacao_usuario"
+                  }
+                }
+              },
+              "telefone": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "ultimoAcesso": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "anexos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "enviadoPor"
+                  ]
+                },
+                "to": {
+                  "model": "Anexos",
+                  "namespace": "public"
+                }
+              },
+              "auditorias": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "alvoId"
+                  ]
+                },
+                "to": {
+                  "model": "Auditoria",
+                  "namespace": "public"
+                }
+              },
+              "auditoriasAuditoria": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "atorId"
+                  ]
+                },
+                "to": {
+                  "model": "Auditoria",
+                  "namespace": "public"
+                }
+              },
+              "avaliacoes": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "avaliadorId"
+                  ]
+                },
+                "to": {
+                  "model": "Avaliacoes",
+                  "namespace": "public"
+                }
+              },
+              "chamadoEventos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "atorId"
+                  ]
+                },
+                "to": {
+                  "model": "ChamadoEventos",
+                  "namespace": "public"
+                }
+              },
+              "chamados": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "atribuidoPor"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              },
+              "chamados2": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "tecnicoId"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              },
+              "chamadosChamados": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "solicitanteId"
+                  ]
+                },
+                "to": {
+                  "model": "Chamados",
+                  "namespace": "public"
+                }
+              },
+              "comentarios": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "autorId"
+                  ]
+                },
+                "to": {
+                  "model": "Comentarios",
+                  "namespace": "public"
+                }
+              },
+              "preferenciasNotificacaos": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "usuarioId"
+                  ]
+                },
+                "to": {
+                  "model": "PreferenciasNotificacao",
+                  "namespace": "public"
+                }
+              },
+              "redefinicoesSenhas": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "usuarioId"
+                  ]
+                },
+                "to": {
+                  "model": "RedefinicoesSenha",
+                  "namespace": "public"
+                }
+              },
+              "sessoes": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "usuarioId"
+                  ]
+                },
+                "to": {
+                  "model": "Sessoes",
+                  "namespace": "public"
+                }
+              },
+              "tecnicos": {
+                "cardinality": "1:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "usuarioId"
+                  ]
+                },
+                "to": {
+                  "model": "Tecnicos",
+                  "namespace": "public"
+                }
+              },
+              "usuarios": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "aprovadoPor"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              },
+              "usuariosUsuarios": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "aprovadoPor"
+                  ]
+                },
+                "to": {
+                  "model": "Usuarios",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "aprovadoEm": {
+                  "column": "aprovado_em"
+                },
+                "aprovadoPor": {
+                  "column": "aprovado_por"
+                },
+                "atualizadoEm": {
+                  "column": "atualizado_em"
+                },
+                "criadoEm": {
+                  "column": "criado_em"
+                },
+                "email": {
+                  "column": "email"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nome": {
+                  "column": "nome"
+                },
+                "perfil": {
+                  "column": "perfil"
+                },
+                "senhaHash": {
+                  "column": "senha_hash"
+                },
+                "setor": {
+                  "column": "setor"
+                },
+                "situacao": {
+                  "column": "situacao"
+                },
+                "telefone": {
+                  "column": "telefone"
+                },
+                "ultimoAcesso": {
+                  "column": "ultimo_acesso"
+                }
+              },
+              "namespaceId": "public",
+              "table": "usuarios"
+            }
+          }
+        }
+      }
+    }
+  },
+  "storage": {
+    "namespaces": {
+      "public": {
+        "entries": {
+          "native_enum": {
+            "perfil_usuario": {
+              "kind": "postgres-enum",
+              "members": [
+                "administrador",
+                "tecnico",
+                "usuario"
+              ],
+              "typeName": "perfil_usuario"
+            },
+            "situacao_usuario": {
+              "kind": "postgres-enum",
+              "members": [
+                "pendente",
+                "ativo",
+                "inativo",
+                "recusado"
+              ],
+              "typeName": "situacao_usuario"
+            },
+            "status_chamado": {
+              "kind": "postgres-enum",
+              "members": [
+                "aberto",
+                "em_andamento",
+                "resolvido",
+                "cancelado"
+              ],
+              "typeName": "status_chamado"
+            },
+            "tipo_evento": {
+              "kind": "postgres-enum",
+              "members": [
+                "criado",
+                "atribuido",
+                "devolvido",
+                "iniciado",
+                "prioridade_alterada",
+                "resolvido",
+                "cancelado",
+                "reaberto"
+              ],
+              "typeName": "tipo_evento"
+            },
+            "tipo_notificacao": {
+              "kind": "postgres-enum",
+              "members": [
+                "chamado_atualizado",
+                "chamado_resolvido",
+                "lembrete_avaliacao",
+                "chamado_atribuido",
+                "sla_perto_vencer",
+                "resposta_solicitante",
+                "novo_cadastro",
+                "sla_vencido",
+                "chamado_devolvido"
+              ],
+              "typeName": "tipo_notificacao"
+            }
+          },
+          "table": {
+            "anexos": {
+              "checks": [
+                {
+                  "expression": "(tamanho_bytes > 0)",
+                  "name": "anexos_tamanho_bytes_check"
+                }
+              ],
+              "columns": {
+                "caminho": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "chamado_id": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "enviado_por": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int8@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "nome_arquivo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "tamanho_bytes": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "tipo_mime": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "anexos_chamado_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "chamado_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "anexos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  }
+                },
+                {
+                  "name": "anexos_enviado_por_fkey",
+                  "source": {
+                    "columns": [
+                      "enviado_por"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "anexos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "chamado_id"
+                  ],
+                  "name": "idx_anexos_chamado",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "anexos_pkey"
+              },
+              "uniques": []
+            },
+            "auditoria": {
+              "columns": {
+                "acao": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "alvo_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "ator_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "detalhe": {
+                  "codecId": "pg/jsonb@1",
+                  "default": {
+                    "expression": "'{}'::jsonb",
+                    "kind": "function"
+                  },
+                  "nativeType": "jsonb",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int8@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int8",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "auditoria_alvo_id_fkey",
+                  "source": {
+                    "columns": [
+                      "alvo_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "auditoria"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                },
+                {
+                  "name": "auditoria_ator_id_fkey",
+                  "source": {
+                    "columns": [
+                      "ator_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "auditoria"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "ator_id",
+                    "criado_em"
+                  ],
+                  "name": "idx_auditoria_ator",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "auditoria_pkey"
+              },
+              "uniques": []
+            },
+            "avaliacoes": {
+              "checks": [
+                {
+                  "expression": "((nota >= 1) AND (nota <= 5))",
+                  "name": "avaliacoes_nota_check"
+                }
+              ],
+              "columns": {
+                "avaliador_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "chamado_id": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "comentario": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "nota": {
+                  "codecId": "pg/int2@1",
+                  "nativeType": "int2",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "avaliacoes_avaliador_id_fkey",
+                  "source": {
+                    "columns": [
+                      "avaliador_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "avaliacoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                },
+                {
+                  "name": "avaliacoes_chamado_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "chamado_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "avaliacoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "chamado_id"
+                ],
+                "name": "avaliacoes_pkey"
+              },
+              "uniques": []
+            },
+            "categorias": {
+              "columns": {
+                "ativa": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int2@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "nome": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "categorias_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "nome"
+                  ],
+                  "name": "categorias_nome_key"
+                }
+              ]
+            },
+            "chamado_eventos": {
+              "columns": {
+                "ator_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "chamado_id": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "detalhe": {
+                  "codecId": "pg/jsonb@1",
+                  "default": {
+                    "expression": "'{}'::jsonb",
+                    "kind": "function"
+                  },
+                  "nativeType": "jsonb",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int8@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "tipo": {
+                  "codecId": "pg/enum@1",
+                  "nativeType": "tipo_evento",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "tipo_evento"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "TipoEvento",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "chamado_eventos_ator_id_fkey",
+                  "source": {
+                    "columns": [
+                      "ator_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamado_eventos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                },
+                {
+                  "name": "chamado_eventos_chamado_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "chamado_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamado_eventos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "chamado_id",
+                    "criado_em"
+                  ],
+                  "name": "idx_eventos_chamado",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "chamado_eventos_pkey"
+              },
+              "uniques": []
+            },
+            "chamados": {
+              "checks": [
+                {
+                  "expression": "((status <> 'em_andamento'::status_chamado) OR (tecnico_id IS NOT NULL))",
+                  "name": "andamento_tem_tecnico"
+                },
+                {
+                  "expression": "((tecnico_id IS NULL) = (atribuido_em IS NULL))",
+                  "name": "atribuicao_completa"
+                },
+                {
+                  "expression": "(length(btrim(descricao)) > 0)",
+                  "name": "chamados_descricao_check"
+                },
+                {
+                  "expression": "(length(btrim(titulo)) > 0)",
+                  "name": "chamados_titulo_check"
+                },
+                {
+                  "expression": "((status <> 'resolvido'::status_chamado) OR ((tecnico_id IS NOT NULL) AND (resolvido_em IS NOT NULL) AND (solucao IS NOT NULL)))",
+                  "name": "resolvido_completo"
+                }
+              ],
+              "columns": {
+                "atribuido_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "atribuido_por": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "atualizado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "categoria_id": {
+                  "codecId": "pg/int2@1",
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "descricao": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int8@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "iniciado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "prazo_sla": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "prioridade_id": {
+                  "codecId": "pg/int2@1",
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "resolvido_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "solicitante_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "solucao": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "aberto"
+                  },
+                  "nativeType": "status_chamado",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "status_chamado"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "StatusChamado",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "tecnico_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "titulo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "chamados_atribuido_por_fkey",
+                  "source": {
+                    "columns": [
+                      "atribuido_por"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                },
+                {
+                  "name": "chamados_categoria_id_fkey",
+                  "source": {
+                    "columns": [
+                      "categoria_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "categorias"
+                  }
+                },
+                {
+                  "name": "chamados_prioridade_id_fkey",
+                  "source": {
+                    "columns": [
+                      "prioridade_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "prioridades"
+                  }
+                },
+                {
+                  "name": "chamados_solicitante_id_fkey",
+                  "source": {
+                    "columns": [
+                      "solicitante_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                },
+                {
+                  "name": "chamados_tecnico_id_fkey",
+                  "source": {
+                    "columns": [
+                      "tecnico_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "expression": "((titulo || ' '::text) || descricao)",
+                  "name": "idx_chamados_busca",
+                  "type": "gin",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "criado_em"
+                  ],
+                  "name": "idx_chamados_criado_em",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "status",
+                    "prazo_sla"
+                  ],
+                  "name": "idx_chamados_fila",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "solicitante_id",
+                    "criado_em"
+                  ],
+                  "name": "idx_chamados_solicitante",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "tecnico_id",
+                    "status"
+                  ],
+                  "name": "idx_chamados_tecnico",
+                  "unique": false,
+                  "where": "(tecnico_id IS NOT NULL)"
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "chamados_pkey"
+              },
+              "uniques": []
+            },
+            "comentarios": {
+              "checks": [
+                {
+                  "expression": "(length(btrim(texto)) > 0)",
+                  "name": "comentarios_texto_check"
+                }
+              ],
+              "columns": {
+                "autor_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "chamado_id": {
+                  "codecId": "pg/int8@1",
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int8@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "texto": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "comentarios_autor_id_fkey",
+                  "source": {
+                    "columns": [
+                      "autor_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "comentarios"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                },
+                {
+                  "name": "comentarios_chamado_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "chamado_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "comentarios"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "chamados"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "chamado_id",
+                    "criado_em"
+                  ],
+                  "name": "idx_comentarios_chamado",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "comentarios_pkey"
+              },
+              "uniques": []
+            },
+            "preferencias_notificacao": {
+              "columns": {
+                "ativa": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "tipo": {
+                  "codecId": "pg/enum@1",
+                  "nativeType": "tipo_notificacao",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "tipo_notificacao"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "TipoNotificacao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "usuario_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "preferencias_notificacao_usuario_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "usuario_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "preferencias_notificacao"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "usuario_id",
+                  "tipo"
+                ],
+                "name": "preferencias_notificacao_pkey"
+              },
+              "uniques": []
+            },
+            "prioridades": {
+              "checks": [
+                {
+                  "expression": "(sla_horas > 0)",
+                  "name": "prioridades_sla_horas_check"
+                }
+              ],
+              "columns": {
+                "id": {
+                  "codecId": "pg/int2@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "nome": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "peso": {
+                  "codecId": "pg/int2@1",
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "sla_horas": {
+                  "codecId": "pg/int4@1",
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "prioridades_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "nome"
+                  ],
+                  "name": "prioridades_nome_key"
+                },
+                {
+                  "columns": [
+                    "peso"
+                  ],
+                  "name": "prioridades_peso_key"
+                }
+              ]
+            },
+            "redefinicoes_senha": {
+              "columns": {
+                "expira_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int8@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int8",
+                  "nullable": false
+                },
+                "token_hash": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "usado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "usuario_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "redefinicoes_senha_usuario_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "usuario_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "redefinicoes_senha"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "redefinicoes_senha_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "token_hash"
+                  ],
+                  "name": "redefinicoes_senha_token_hash_key"
+                }
+              ]
+            },
+            "sessoes": {
+              "columns": {
+                "criada_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "dispositivo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "expira_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "ip": {
+                  "codecId": "pg/inet@1",
+                  "nativeType": "inet",
+                  "nullable": true
+                },
+                "revogada_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "token_hash": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "ultimo_uso": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "usuario_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "sessoes_usuario_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "usuario_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "sessoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "usuario_id"
+                  ],
+                  "name": "idx_sessoes_usuario",
+                  "unique": false,
+                  "where": "(revogada_em IS NULL)"
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "sessoes_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "token_hash"
+                  ],
+                  "name": "sessoes_token_hash_key"
+                }
+              ]
+            },
+            "tecnico_especialidades": {
+              "columns": {
+                "categoria_id": {
+                  "codecId": "pg/int2@1",
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "usuario_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "tecnico_especialidades_categoria_id_fkey",
+                  "source": {
+                    "columns": [
+                      "categoria_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "tecnico_especialidades"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "categorias"
+                  }
+                },
+                {
+                  "name": "tecnico_especialidades_usuario_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "usuario_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "tecnico_especialidades"
+                  },
+                  "target": {
+                    "columns": [
+                      "usuario_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "tecnicos"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "usuario_id",
+                  "categoria_id"
+                ],
+                "name": "tecnico_especialidades_pkey"
+              },
+              "uniques": []
+            },
+            "tecnicos": {
+              "checks": [
+                {
+                  "expression": "(hora_fim > hora_inicio)",
+                  "name": "horario_valido"
+                },
+                {
+                  "expression": "(limite_simultaneos > 0)",
+                  "name": "tecnicos_limite_simultaneos_check"
+                }
+              ],
+              "columns": {
+                "dias_atendimento": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "seg-sex"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "disponivel": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "horaFim": {
+                  "codecId": "pg/time-temporal@1",
+                  "default": {
+                    "expression": "'17:00:00'::time",
+                    "kind": "function"
+                  },
+                  "nativeType": "time",
+                  "nullable": false
+                },
+                "horaInicio": {
+                  "codecId": "pg/time-temporal@1",
+                  "default": {
+                    "expression": "'08:00:00'::time",
+                    "kind": "function"
+                  },
+                  "nativeType": "time",
+                  "nullable": false
+                },
+                "limite_simultaneos": {
+                  "codecId": "pg/int2@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 5
+                  },
+                  "nativeType": "int2",
+                  "nullable": false
+                },
+                "usuario_id": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "tecnicos_usuario_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "usuario_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "tecnicos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "usuario_id"
+                ],
+                "name": "tecnicos_pkey"
+              },
+              "uniques": []
+            },
+            "usuarios": {
+              "checks": [
+                {
+                  "expression": "((situacao <> 'ativo'::situacao_usuario) OR (aprovado_em IS NOT NULL))",
+                  "name": "aprovacao_coerente"
+                },
+                {
+                  "expression": "(email = lower(email))",
+                  "name": "email_minusculo"
+                },
+                {
+                  "expression": "((situacao = ANY (ARRAY['pendente'::situacao_usuario, 'recusado'::situacao_usuario])) OR (perfil IS NOT NULL))",
+                  "name": "perfil_definido"
+                }
+              ],
+              "columns": {
+                "aprovado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                },
+                "aprovado_por": {
+                  "codecId": "pg/uuid@1",
+                  "nativeType": "uuid",
+                  "nullable": true
+                },
+                "atualizado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "email": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nativeType": "uuid",
+                  "nullable": false
+                },
+                "nome": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "perfil": {
+                  "codecId": "pg/enum@1",
+                  "nativeType": "perfil_usuario",
+                  "nullable": true,
+                  "typeParams": {
+                    "typeName": "perfil_usuario"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "PerfilUsuario",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "senha_hash": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "setor": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "situacao": {
+                  "codecId": "pg/enum@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "pendente"
+                  },
+                  "nativeType": "situacao_usuario",
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "situacao_usuario"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "SituacaoUsuario",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "telefone": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "ultimo_acesso": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [
+                {
+                  "name": "usuarios_aprovado_por_fkey",
+                  "source": {
+                    "columns": [
+                      "aprovado_por"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "usuarios"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "situacao",
+                    "perfil"
+                  ],
+                  "name": "idx_usuarios_situacao",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "usuarios_pkey"
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "email"
+                  ],
+                  "name": "usuarios_email_key"
+                }
+              ]
+            }
+          },
+          "valueSet": {
+            "PerfilUsuario": {
+              "kind": "valueSet",
+              "values": [
+                "administrador",
+                "tecnico",
+                "usuario"
+              ]
+            },
+            "SituacaoUsuario": {
+              "kind": "valueSet",
+              "values": [
+                "pendente",
+                "ativo",
+                "inativo",
+                "recusado"
+              ]
+            },
+            "StatusChamado": {
+              "kind": "valueSet",
+              "values": [
+                "aberto",
+                "em_andamento",
+                "resolvido",
+                "cancelado"
+              ]
+            },
+            "TipoEvento": {
+              "kind": "valueSet",
+              "values": [
+                "criado",
+                "atribuido",
+                "devolvido",
+                "iniciado",
+                "prioridade_alterada",
+                "resolvido",
+                "cancelado",
+                "reaberto"
+              ]
+            },
+            "TipoNotificacao": {
+              "kind": "valueSet",
+              "values": [
+                "chamado_atualizado",
+                "chamado_resolvido",
+                "lembrete_avaliacao",
+                "chamado_atribuido",
+                "sla_perto_vencer",
+                "resposta_solicitante",
+                "novo_cadastro",
+                "sla_vencido",
+                "chamado_devolvido"
+              ]
+            }
+          }
+        },
+        "id": "public",
+        "kind": "postgres-schema"
+      }
+    },
+    "storageHash": "93860f1cf0b6911e5656c2895b0425b2d29f7048723c0cfda5747fb7ca2b7eb1"
+  },
+  "capabilities": {
+    "postgres": {
+      "distinctOn": true,
+      "jsonAgg": true,
+      "lateral": true,
+      "limit": true,
+      "orderBy": true,
+      "returning": true
+    },
+    "sql": {
+      "checkConstraint": true,
+      "defaultInInsert": true,
+      "enums": true,
+      "lateral": true,
+      "returning": true,
+      "scalarList": true
+    }
+  },
+  "extensions": {},
+  "meta": {},
+  "_generated": {
+    "warning": "⚠️  GENERATED FILE - DO NOT EDIT",
+    "message": "This file is automatically generated by \"prisma contract emit\".",
+    "regenerate": "To regenerate, run: prisma contract emit"
+  }
+}

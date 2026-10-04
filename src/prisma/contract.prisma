@@ -1,0 +1,284 @@
+// use prisma-8
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
+
+namespace public {
+  model Categorias {
+    id                    SmallInt                @id(map: "categorias_pkey") @default(autoincrement())
+    nome                  String                  @unique(map: "categorias_nome_key")
+    ativa                 Boolean                 @default(true)
+    chamados              Chamados[]
+    tecnicoEspecialidades TecnicoEspecialidades[]
+
+    @@map("categorias")
+  }
+
+  model Prioridades {
+    id       SmallInt   @id(map: "prioridades_pkey") @default(autoincrement())
+    nome     String     @unique(map: "prioridades_nome_key")
+    peso     SmallInt   @unique(map: "prioridades_peso_key")
+    slaHoras Int        @map("sla_horas")
+    chamados Chamados[]
+
+    @@check(expression: "(sla_horas > 0)", map: "prioridades_sla_horas_check")
+    @@map("prioridades")
+  }
+
+  model Usuarios {
+    id                       Uuid                      @id(map: "usuarios_pkey") @default(dbgenerated("gen_random_uuid()"))
+    nome                     String
+    email                    String                    @unique(map: "usuarios_email_key")
+    senhaHash                String                    @map("senha_hash")
+    telefone                 String?
+    setor                    String?
+    perfil                   pg.enum(PerfilUsuario)?
+    situacao                 pg.enum(SituacaoUsuario)  @default("pendente")
+    aprovadoPor              Uuid?                     @map("aprovado_por")
+    aprovadoEm               Timestamptz?              @map("aprovado_em")
+    ultimoAcesso             Timestamptz?              @map("ultimo_acesso")
+    criadoEm                 Timestamptz               @default(now()) @map("criado_em")
+    atualizadoEm             Timestamptz               @default(now()) @map("atualizado_em")
+    anexos                   Anexos[]
+    avaliacoes               Avaliacoes[]
+    chamadoEventos           ChamadoEventos[]
+    comentarios              Comentarios[]
+    preferenciasNotificacaos PreferenciasNotificacao[]
+    redefinicoesSenhas       RedefinicoesSenha[]
+    sessoes                  Sessoes[]
+    tecnicos                 Tecnicos?
+    auditorias               Auditoria[]               @relation(name: "auditoria_alvo_id_fkey")
+    auditoriasAuditoria      Auditoria[]               @relation(name: "auditoria_ator_id_fkey")
+    chamados                 Chamados[]                @relation(name: "chamados_atribuido_por_fkey")
+    chamadosChamados         Chamados[]                @relation(name: "chamados_solicitante_id_fkey")
+    chamados2                Chamados[]                @relation(name: "chamados_tecnico_id_fkey")
+    usuarios                 Usuarios?                 @relation(name: "usuarios_aprovado_por_fkey", fields: [aprovadoPor], references: [id], map: "usuarios_aprovado_por_fkey", index: false)
+    usuariosUsuarios         Usuarios[]                @relation(name: "usuarios_aprovado_por_fkey")
+
+    @@index([situacao, perfil], map: "idx_usuarios_situacao")
+    @@check(expression: "((situacao <> 'ativo'::situacao_usuario) OR (aprovado_em IS NOT NULL))", map: "aprovacao_coerente")
+    @@check(expression: "(email = lower(email))", map: "email_minusculo")
+    @@check(expression: "((situacao = ANY (ARRAY['pendente'::situacao_usuario, 'recusado'::situacao_usuario])) OR (perfil IS NOT NULL))", map: "perfil_definido")
+    @@map("usuarios")
+  }
+
+  model Chamados {
+    id             BigInt                 @id(map: "chamados_pkey") @default(autoincrement())
+    solicitanteId  Uuid                   @map("solicitante_id")
+    titulo         String
+    descricao      String
+    categoriaId    SmallInt               @map("categoria_id")
+    prioridadeId   SmallInt               @map("prioridade_id")
+    status         pg.enum(StatusChamado) @default("aberto")
+    tecnicoId      Uuid?                  @map("tecnico_id")
+    atribuidoPor   Uuid?                  @map("atribuido_por")
+    atribuidoEm    Timestamptz?           @map("atribuido_em")
+    iniciadoEm     Timestamptz?           @map("iniciado_em")
+    resolvidoEm    Timestamptz?           @map("resolvido_em")
+    solucao        String?
+    prazoSla       Timestamptz?           @map("prazo_sla")
+    criadoEm       Timestamptz            @default(now()) @map("criado_em")
+    atualizadoEm   Timestamptz            @default(now()) @map("atualizado_em")
+    anexos         Anexos[]
+    avaliacoes     Avaliacoes?
+    chamadoEventos ChamadoEventos[]
+    comentarios    Comentarios[]
+    usuarios       Usuarios?              @relation(name: "chamados_atribuido_por_fkey", fields: [atribuidoPor], references: [id], map: "chamados_atribuido_por_fkey", index: false)
+    categoria      Categorias             @relation(fields: [categoriaId], references: [id], map: "chamados_categoria_id_fkey", index: false)
+    prioridade     Prioridades            @relation(fields: [prioridadeId], references: [id], map: "chamados_prioridade_id_fkey", index: false)
+    solicitante    Usuarios               @relation(name: "chamados_solicitante_id_fkey", fields: [solicitanteId], references: [id], map: "chamados_solicitante_id_fkey", index: false)
+    tecnico        Usuarios?              @relation(name: "chamados_tecnico_id_fkey", fields: [tecnicoId], references: [id], map: "chamados_tecnico_id_fkey", index: false)
+
+    @@index(expression: "((titulo || ' '::text) || descricao)", map: "idx_chamados_busca", type: "gin")
+    @@index([criadoEm], map: "idx_chamados_criado_em")
+    @@index([status, prazoSla], map: "idx_chamados_fila")
+    @@index([solicitanteId, criadoEm], map: "idx_chamados_solicitante")
+    @@index([tecnicoId, status], map: "idx_chamados_tecnico", where: "(tecnico_id IS NOT NULL)")
+    @@check(expression: "((status <> 'em_andamento'::status_chamado) OR (tecnico_id IS NOT NULL))", map: "andamento_tem_tecnico")
+    @@check(expression: "((tecnico_id IS NULL) = (atribuido_em IS NULL))", map: "atribuicao_completa")
+    @@check(expression: "(length(btrim(descricao)) > 0)", map: "chamados_descricao_check")
+    @@check(expression: "(length(btrim(titulo)) > 0)", map: "chamados_titulo_check")
+    @@check(expression: "((status <> 'resolvido'::status_chamado) OR ((tecnico_id IS NOT NULL) AND (resolvido_em IS NOT NULL) AND (solucao IS NOT NULL)))", map: "resolvido_completo")
+    @@map("chamados")
+  }
+
+  model Anexos {
+    id           BigInt      @id(map: "anexos_pkey") @default(autoincrement())
+    chamadoId    BigInt      @map("chamado_id")
+    enviadoPor   Uuid        @map("enviado_por")
+    nomeArquivo  String      @map("nome_arquivo")
+    tipoMime     String      @map("tipo_mime")
+    tamanhoBytes BigInt      @map("tamanho_bytes")
+    caminho      String
+    criadoEm     Timestamptz @default(now()) @map("criado_em")
+    chamado      Chamados    @relation(fields: [chamadoId], references: [id], onDelete: Cascade, map: "anexos_chamado_id_fkey")
+    usuarios     Usuarios    @relation(fields: [enviadoPor], references: [id], map: "anexos_enviado_por_fkey", index: false)
+
+    @@index([chamadoId], map: "idx_anexos_chamado")
+    @@check(expression: "(tamanho_bytes > 0)", map: "anexos_tamanho_bytes_check")
+    @@map("anexos")
+  }
+
+  model Auditoria {
+    id       BigInt      @id(map: "auditoria_pkey") @default(autoincrement())
+    atorId   Uuid?       @map("ator_id")
+    acao     String
+    alvoId   Uuid?       @map("alvo_id")
+    detalhe  Jsonb       @default(dbgenerated("'{}'::jsonb"))
+    criadoEm Timestamptz @default(now()) @map("criado_em")
+    alvo     Usuarios?   @relation(name: "auditoria_alvo_id_fkey", fields: [alvoId], references: [id], map: "auditoria_alvo_id_fkey", index: false)
+    ator     Usuarios?   @relation(name: "auditoria_ator_id_fkey", fields: [atorId], references: [id], map: "auditoria_ator_id_fkey", index: false)
+
+    @@index([atorId, criadoEm], map: "idx_auditoria_ator")
+    @@map("auditoria")
+  }
+
+  model Avaliacoes {
+    chamadoId   BigInt      @id(map: "avaliacoes_pkey") @map("chamado_id")
+    avaliadorId Uuid        @map("avaliador_id")
+    nota        SmallInt
+    comentario  String?
+    criadoEm    Timestamptz @default(now()) @map("criado_em")
+    avaliador   Usuarios    @relation(fields: [avaliadorId], references: [id], map: "avaliacoes_avaliador_id_fkey", index: false)
+    chamado     Chamados    @relation(fields: [chamadoId], references: [id], onDelete: Cascade, map: "avaliacoes_chamado_id_fkey")
+
+    @@check(expression: "((nota >= 1) AND (nota <= 5))", map: "avaliacoes_nota_check")
+    @@map("avaliacoes")
+  }
+
+  model ChamadoEventos {
+    id        BigInt              @id(map: "chamado_eventos_pkey") @default(autoincrement())
+    chamadoId BigInt              @map("chamado_id")
+    atorId    Uuid?               @map("ator_id")
+    tipo      pg.enum(TipoEvento)
+    detalhe   Jsonb               @default(dbgenerated("'{}'::jsonb"))
+    criadoEm  Timestamptz         @default(now()) @map("criado_em")
+    ator      Usuarios?           @relation(fields: [atorId], references: [id], map: "chamado_eventos_ator_id_fkey", index: false)
+    chamado   Chamados            @relation(fields: [chamadoId], references: [id], onDelete: Cascade, map: "chamado_eventos_chamado_id_fkey", index: false)
+
+    @@index([chamadoId, criadoEm], map: "idx_eventos_chamado")
+    @@map("chamado_eventos")
+  }
+
+  model Comentarios {
+    id        BigInt      @id(map: "comentarios_pkey") @default(autoincrement())
+    chamadoId BigInt      @map("chamado_id")
+    autorId   Uuid        @map("autor_id")
+    texto     String
+    criadoEm  Timestamptz @default(now()) @map("criado_em")
+    autor     Usuarios    @relation(fields: [autorId], references: [id], map: "comentarios_autor_id_fkey", index: false)
+    chamado   Chamados    @relation(fields: [chamadoId], references: [id], onDelete: Cascade, map: "comentarios_chamado_id_fkey", index: false)
+
+    @@index([chamadoId, criadoEm], map: "idx_comentarios_chamado")
+    @@check(expression: "(length(btrim(texto)) > 0)", map: "comentarios_texto_check")
+    @@map("comentarios")
+  }
+
+  model PreferenciasNotificacao {
+    usuarioId Uuid                     @map("usuario_id")
+    tipo      pg.enum(TipoNotificacao)
+    ativa     Boolean                  @default(true)
+    usuario   Usuarios                 @relation(fields: [usuarioId], references: [id], onDelete: Cascade, map: "preferencias_notificacao_usuario_id_fkey", index: false)
+
+    @@id([usuarioId, tipo], map: "preferencias_notificacao_pkey")
+    @@map("preferencias_notificacao")
+  }
+
+  model RedefinicoesSenha {
+    id        BigInt       @id(map: "redefinicoes_senha_pkey") @default(autoincrement())
+    usuarioId Uuid         @map("usuario_id")
+    tokenHash String       @unique(map: "redefinicoes_senha_token_hash_key") @map("token_hash")
+    expiraEm  Timestamptz  @map("expira_em")
+    usadoEm   Timestamptz? @map("usado_em")
+    usuario   Usuarios     @relation(fields: [usuarioId], references: [id], onDelete: Cascade, map: "redefinicoes_senha_usuario_id_fkey", index: false)
+
+    @@map("redefinicoes_senha")
+  }
+
+  model Sessoes {
+    id          Uuid         @id(map: "sessoes_pkey") @default(dbgenerated("gen_random_uuid()"))
+    usuarioId   Uuid         @map("usuario_id")
+    tokenHash   String       @unique(map: "sessoes_token_hash_key") @map("token_hash")
+    dispositivo String?
+    ip          Inet?
+    criadaEm    Timestamptz  @default(now()) @map("criada_em")
+    ultimoUso   Timestamptz  @default(now()) @map("ultimo_uso")
+    expiraEm    Timestamptz  @map("expira_em")
+    revogadaEm  Timestamptz? @map("revogada_em")
+    usuario     Usuarios     @relation(fields: [usuarioId], references: [id], onDelete: Cascade, map: "sessoes_usuario_id_fkey", index: false)
+
+    @@index([usuarioId], map: "idx_sessoes_usuario", where: "(revogada_em IS NULL)")
+    @@map("sessoes")
+  }
+
+  model Tecnicos {
+    usuarioId             Uuid                    @id(map: "tecnicos_pkey") @map("usuario_id")
+    disponivel            Boolean                 @default(true)
+    limiteSimultaneos     SmallInt                @default(5) @map("limite_simultaneos")
+    diasAtendimento       String                  @default("seg-sex") @map("dias_atendimento")
+    horaInicio            Time                    @default("08:00:00") @map("hora_inicio")
+    horaFim               Time                    @default("17:00:00") @map("hora_fim")
+    tecnicoEspecialidades TecnicoEspecialidades[]
+    usuario               Usuarios                @relation(fields: [usuarioId], references: [id], onDelete: Cascade, map: "tecnicos_usuario_id_fkey")
+
+    @@check(expression: "(hora_fim > hora_inicio)", map: "horario_valido")
+    @@check(expression: "(limite_simultaneos > 0)", map: "tecnicos_limite_simultaneos_check")
+    @@map("tecnicos")
+  }
+
+  model TecnicoEspecialidades {
+    usuarioId   Uuid       @map("usuario_id")
+    categoriaId SmallInt   @map("categoria_id")
+    categoria   Categorias @relation(fields: [categoriaId], references: [id], map: "tecnico_especialidades_categoria_id_fkey", index: false)
+    usuario     Tecnicos   @relation(fields: [usuarioId], references: [usuarioId], onDelete: Cascade, map: "tecnico_especialidades_usuario_id_fkey", index: false)
+
+    @@id([usuarioId, categoriaId], map: "tecnico_especialidades_pkey")
+    @@map("tecnico_especialidades")
+  }
+
+  native_enum PerfilUsuario {
+    administrador = "administrador"
+    tecnico = "tecnico"
+    usuario = "usuario"
+    @@map("perfil_usuario")
+  }
+
+  native_enum SituacaoUsuario {
+    pendente = "pendente"
+    ativo = "ativo"
+    inativo = "inativo"
+    recusado = "recusado"
+    @@map("situacao_usuario")
+  }
+
+  native_enum StatusChamado {
+    aberto = "aberto"
+    em_andamento = "em_andamento"
+    resolvido = "resolvido"
+    cancelado = "cancelado"
+    @@map("status_chamado")
+  }
+
+  native_enum TipoEvento {
+    criado = "criado"
+    atribuido = "atribuido"
+    devolvido = "devolvido"
+    iniciado = "iniciado"
+    prioridade_alterada = "prioridade_alterada"
+    resolvido = "resolvido"
+    cancelado = "cancelado"
+    reaberto = "reaberto"
+    @@map("tipo_evento")
+  }
+
+  native_enum TipoNotificacao {
+    chamado_atualizado = "chamado_atualizado"
+    chamado_resolvido = "chamado_resolvido"
+    lembrete_avaliacao = "lembrete_avaliacao"
+    chamado_atribuido = "chamado_atribuido"
+    sla_perto_vencer = "sla_perto_vencer"
+    resposta_solicitante = "resposta_solicitante"
+    novo_cadastro = "novo_cadastro"
+    sla_vencido = "sla_vencido"
+    chamado_devolvido = "chamado_devolvido"
+    @@map("tipo_notificacao")
+  }
+}
