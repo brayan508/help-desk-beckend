@@ -5,7 +5,7 @@ import { Router } from 'express';
 import { AvaliacaoController } from '../controllers/avaliacao.controller.js';
 import { validate } from '../middlewares/validate.middleware.js';
 import { autenticar } from '../middlewares/auth.middleware.js';
-import { criarAvaliacaoSchema } from '../schemas/avaliacao.schema.js';
+import { avaliarChamadoSchema } from '../schemas/avaliacao.schema.js';
 
 /**
  * @openapi
@@ -104,8 +104,8 @@ const router = Router();
 router.post(
   '/chamados/:id/avaliacao',
   autenticar,
-  validate(criarAvaliacaoSchema),
-  AvaliacaoController.criar,
+  validate(avaliarChamadoSchema),
+  AvaliacaoController.avaliar,
 );
 
 export default router;
