@@ -186,7 +186,7 @@ const participa = (
 
 // Quem não tem NENHUMA relação com o chamado recebe 404,
 // e não 403.
-async function carregarComAcesso(
+export async function CarregarComAcesso(
   id: bigint,
   u: Logado,
 ) {
@@ -204,11 +204,11 @@ async function carregarComAcesso(
 
 // Ações do técnico: somente o técnico atribuído
 // a ESTE chamado.
-async function carregarComoTecnico(
+ export async function carregarComoTecnico(
   id: bigint,
   u: Logado,
 ) {
-  const c = await carregarComAcesso(id, u);
+  const c = await CarregarComAcesso(id, u);
 
   if (c.tecnicoId !== u.id) {
     throw new HttpError(
@@ -432,7 +432,7 @@ export async function buscarChamado(
   u: Logado,
 ) {
   const c =
-    await carregarComAcesso(id, u);
+    await CarregarComAcesso(id, u);
 
   const ctx =
     await carregarContexto();
@@ -717,7 +717,7 @@ export async function cancelarChamado(
   u: Logado,
 ) {
   const c =
-    await carregarComAcesso(
+    await CarregarComAcesso(
       id,
       u,
     );

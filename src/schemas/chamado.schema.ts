@@ -4,7 +4,7 @@ import { z } from 'zod';
 // O id de chamados é BigInt. Na URL chega como texto: conferimos que é um inteiro
 // positivo dentro do limite do bigint do PostgreSQL; o controller converte para BigInt.
 const MAX_BIGINT = BigInt('9223372036854775807');
-const idChamado = z.string().refine((v) => {
+ export const idChamado = z.string().refine((v) => {
   // Tudo numa só conferência: no Zod 4 as conferências seguintes ainda rodam depois de uma
   // falha, e BigInt('abc') lança exceção (daria erro 500 em vez de 400).
   if (!/^\d{1,19}$/.test(v)) return false;
